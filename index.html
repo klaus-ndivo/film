@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cinema & Emotion — How Films Shape the Way We Feel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              display: ['"Playfair Display"', 'serif'],
+              body: ['Inter', 'sans-serif'],
+            },
+            colors: {
+              night: '#050505',
+              charcoal: '#0f0f0f',
+              gold: '#d4af37',
+              mist: '#f8f8f8',
+            },
+            backgroundImage: {
+              'hero-gradient':
+                'radial-gradient(circle at 20% 20%, rgba(212,175,55,0.12), transparent 45%), radial-gradient(circle at 80% 10%, rgba(255,255,255,0.08), transparent 50%), linear-gradient(135deg, #010101 0%, #111111 60%, #050505 100%)',
+            },
+            boxShadow: {
+              glow: '0 0 60px rgba(212,175,55,0.3)',
+            },
+            keyframes: {
+              fadeInUp: {
+                '0%': { opacity: 0, transform: 'translateY(20px)' },
+                '100%': { opacity: 1, transform: 'translateY(0)' },
+              },
+              slowPulse: {
+                '0%, 100%': { opacity: 0.3, transform: 'scale(1)' },
+                '50%': { opacity: 0.7, transform: 'scale(1.2)' },
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0px)' },
+                '50%': { transform: 'translateY(-10px)' },
+              },
+              grain: {
+                '0%': { transform: 'translate(0,0)' },
+                '25%': { transform: 'translate(-10px, 5px)' },
+                '50%': { transform: 'translate(10px, -10px)' },
+                '75%': { transform: 'translate(-5px, 10px)' },
+                '100%': { transform: 'translate(0,0)' },
+              },
+            },
+            animation: {
+              fadeInUp: 'fadeInUp 1.2s ease forwards',
+              slowPulse: 'slowPulse 6s ease-in-out infinite',
+              float: 'float 8s ease-in-out infinite',
+              grain: 'grain 14s steps(10) infinite',
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #050505;
+        color: #f8f8f8;
+      }
+
+      .noise-layer {
+        pointer-events: none;
+        position: fixed;
+        inset: 0;
+        background-image: url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
+        opacity: 0.08;
+        mix-blend-mode: screen;
+        animation: grain 18s steps(6) infinite;
+        z-index: 10;
+      }
+
+      .film-grain::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.6));
+        mix-blend-mode: multiply;
+        pointer-events: none;
+      }
+
+      .film-grain::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: url('https://www.transparenttextures.com/patterns/noise-pattern-with-subtle-cross-lines.png');
+        opacity: 0.08;
+        pointer-events: none;
+        animation: grain 12s steps(6) infinite;
+      }
+
+      audio::-webkit-media-controls-panel {
+        background: rgba(5, 5, 5, 0.7);
+        border-radius: 999px;
+      }
+
+      audio::-webkit-media-controls-current-time-display,
+      audio::-webkit-media-controls-time-remaining-display {
+        color: #d4af37;
+      }
+
+      .section-fade {
+        opacity: 0;
+        animation: fadeInSoft 1.6s ease forwards;
+        animation-delay: 0.2s;
+      }
+
+      .tilt-card {
+        transition: transform 0.6s ease, border 0.6s ease, box-shadow 0.6s ease;
+      }
+
+      .tilt-card:hover {
+        transform: translateY(-8px) scale(1.02);
+      }
+
+      .clip-vignette {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .clip-vignette::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0.55));
+        pointer-events: none;
+      }
+
+      .motion-tile {
+        transition: transform 0.5s ease, box-shadow 0.5s ease, border 0.5s ease;
+      }
+
+      .motion-tile:hover {
+        transform: translateY(-6px) scale(1.03);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
+      }
+
+      .film-frame {
+        position: relative;
+      }
+
+      .film-frame::before,
+      .film-frame::after {
+        content: '';
+        position: absolute;
+        inset: 12px;
+        border: 1px dashed rgba(212, 175, 55, 0.25);
+        pointer-events: none;
+      }
+
+      .film-frame::after {
+        inset: 6px;
+        border-style: solid;
+        border-width: 1px;
+      }
+
+      .lens-flare {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 70% 20%, rgba(255, 255, 255, 0.25), transparent 45%);
+        mix-blend-mode: screen;
+        opacity: 0.35;
+        pointer-events: none;
+      }
+
+      .hero-pan {
+        background-size: 115%;
+        animation: heroDrift 18s ease-in-out infinite alternate;
+      }
+
+      @keyframes fadeInSoft {
+        0% {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes heroDrift {
+        0% {
+          transform: scale(1) translate3d(0, 0, 0);
+          filter: saturate(1);
+        }
+        50% {
+          transform: scale(1.05) translate3d(-10px, -5px, 0);
+          filter: saturate(1.1);
+        }
+        100% {
+          transform: scale(1.08) translate3d(12px, 8px, 0);
+          filter: saturate(1.05);
+        }
+      }
+    </style>
+  </head>
+  <body class="relative bg-night text-mist">
+    <div class="noise-layer"></div>
+
+    <!-- HERO SECTION: dramatic intro hero, update copy below -->
+    <section
+      class="relative min-h-screen bg-hero-gradient flex items-center justify-center px-6 py-20 overflow-hidden section-fade"
+    >
+      <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1478720568477-152d9b164e26?auto=format&fit=crop&w=1400&q=60')] bg-cover bg-center opacity-20 mix-blend-screen hero-pan"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-black"></div>
+      <div class="lens-flare"></div>
+      <div class="absolute top-10 left-16 w-32 h-32 bg-gold/10 rounded-full blur-3xl animate-slowPulse"></div>
+      <div class="absolute bottom-10 right-20 w-44 h-44 bg-white/5 rounded-full blur-3xl animate-slowPulse"></div>
+
+      <div class="absolute inset-0 pointer-events-none">
+        <div class="w-full h-full relative">
+          <span
+            class="absolute top-1/4 left-1/3 w-2 h-2 bg-white/40 rounded-full blur-sm animate-pulse"
+          ></span>
+          <span
+            class="absolute top-1/3 right-1/4 w-1.5 h-1.5 bg-gold/50 rounded-full blur-[2px] animate-pulse"
+          ></span>
+          <span
+            class="absolute bottom-1/4 left-1/2 w-1 h-1 bg-white/30 rounded-full blur-[1px] animate-[pulse_4s_ease_in_out_infinite]"
+          ></span>
+        </div>
+      </div>
+
+      <div class="relative z-10 max-w-4xl text-center space-y-6 animate-fadeInUp">
+        <p class="uppercase tracking-[0.5em] text-xs text-gold/70">A sensory essay</p>
+        <h1 class="text-4xl md:text-7xl lg:text-8xl font-display tracking-tight">Cinema & Emotion</h1>
+        <p class="text-lg md:text-2xl text-mist/80 italic">How Films Shape the Way We Feel</p>
+        <p class="text-base md:text-lg text-mist/70">
+          A slow-breathing exploration of light, sound, and the emotional currents that linger after the credits fade.
+        </p>
+        <button
+          class="inline-flex items-center gap-3 border border-gold text-gold px-8 py-3 rounded-full uppercase tracking-[0.3em] text-xs md:text-sm transition duration-500 hover:scale-105 hover:shadow-glow"
+        >
+          Explore the Experience
+          <span class="w-2 h-2 bg-gold rounded-full animate-ping"></span>
+        </button>
+      </div>
+    </section>
+
+    <!-- EMOTION SHOWCASE: glass cards, update emotion descriptions -->
+    <section class="relative bg-night py-24 px-6 lg:px-20 section-fade">
+      <div class="max-w-6xl mx-auto space-y-8">
+        <div class="flex items-center justify-between gap-6 flex-wrap">
+          <div>
+            <p class="text-xs uppercase tracking-[0.4em] text-gold/70">Emotional frequencies</p>
+            <h2 class="font-display text-3xl md:text-5xl">Feelings Captured in Frames</h2>
+          </div>
+          <p class="text-mist/70 max-w-xl">
+            Each emotion is a lens. These fragments behave like moodboards, whispering narratives in color, texture, and quiet light.
+          </p>
+        </div>
+
+        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+          <article
+            class="relative overflow-hidden rounded-3xl border border-white/5 bg-white/5 backdrop-blur-2xl p-8 flex flex-col gap-6 tilt-card hover:border-gold/80 hover:shadow-glow group"
+          >
+            <div class="relative h-48 rounded-2xl clip-vignette border border-white/10">
+              <video
+                class="absolute inset-0 w-full h-full object-cover opacity-80"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="auto"
+                poster="https://images.unsplash.com/photo-1453227588063-bb302b62f50b?auto=format&fit=crop&w=900&q=60"
+              >
+                <source src="https://cdn.coverr.co/videos/coverr-film-memories-4020/1080p.mp4" type="video/mp4" />
+              </video>
+              <div class="absolute inset-0 bg-gradient-to-br from-gold/40 via-transparent to-black/80"></div>
+            </div>
+            <div class="space-y-3">
+              <h3 class="font-display text-3xl tracking-tight text-mist">Nostalgia</h3>
+              <p class="text-sm md:text-base text-mist/70">
+                Sepia whispers of home movies, dust in the projector light, every frame a gently-lit memory.
+              </p>
+            </div>
+          </article>
+
+          <article
+            class="relative overflow-hidden rounded-3xl border border-white/5 bg-white/5 backdrop-blur-2xl p-8 flex flex-col gap-6 tilt-card hover:border-gold/80 hover:shadow-glow group"
+          >
+            <div class="relative h-48 rounded-2xl clip-vignette border border-white/10">
+              <video
+                class="absolute inset-0 w-full h-full object-cover opacity-80"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="auto"
+                poster="https://images.unsplash.com/photo-1459623837996-0c88b0b63e38?auto=format&fit=crop&w=900&q=60"
+              >
+                <source src="https://cdn.coverr.co/videos/coverr-dark-corridor-1891/1080p.mp4" type="video/mp4" />
+              </video>
+              <div class="absolute inset-0 bg-gradient-to-br from-black via-gold/20 to-transparent"></div>
+            </div>
+            <div class="space-y-3">
+              <h3 class="font-display text-3xl tracking-tight text-mist">Fear</h3>
+              <p class="text-sm md:text-base text-mist/70">
+                Shadows stretch into myth, heartbeat percussion builds, and silence becomes the loudest sound.
+              </p>
+            </div>
+          </article>
+
+          <article
+            class="relative overflow-hidden rounded-3xl border border-white/5 bg-white/5 backdrop-blur-2xl p-8 flex flex-col gap-6 tilt-card hover:border-gold/80 hover:shadow-glow group"
+          >
+            <div class="relative h-48 rounded-2xl clip-vignette border border-white/10">
+              <video
+                class="absolute inset-0 w-full h-full object-cover opacity-90"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="auto"
+                poster="https://images.unsplash.com/photo-1478720568477-152d9b164e26?auto=format&fit=crop&w=900&q=60"
+              >
+                <source src="https://cdn.coverr.co/videos/coverr-balloons-9107/1080p.mp4" type="video/mp4" />
+              </video>
+              <div class="absolute inset-0 bg-gradient-to-br from-gold/50 via-pink-400/30 to-transparent mix-blend-screen"></div>
+            </div>
+            <div class="space-y-3">
+              <h3 class="font-display text-3xl tracking-tight text-mist">Joy</h3>
+              <p class="text-sm md:text-base text-mist/70">
+                Saturated light, laughter in slow motion, the horizon opening wide to invite wonder in.
+              </p>
+            </div>
+          </article>
+
+          <article
+            class="relative overflow-hidden rounded-3xl border border-white/5 bg-white/5 backdrop-blur-2xl p-8 flex flex-col gap-6 tilt-card hover:border-gold/80 hover:shadow-glow group"
+          >
+            <div class="relative h-48 rounded-2xl clip-vignette border border-white/10">
+              <video
+                class="absolute inset-0 w-full h-full object-cover opacity-80"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="auto"
+                poster="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=60"
+              >
+                <source src="https://cdn.coverr.co/videos/coverr-night-drive-3179/1080p.mp4" type="video/mp4" />
+              </video>
+              <div class="absolute inset-0 bg-gradient-to-br from-black/80 via-gold/15 to-transparent"></div>
+            </div>
+            <div class="space-y-3">
+              <h3 class="font-display text-3xl tracking-tight text-mist">Loneliness</h3>
+              <p class="text-sm md:text-base text-mist/70">
+                Empty highways hum with neon ghosts, the pause between heartbeats stretching like horizon lines.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEW: Motion Fragments horizontal reel -->
+    <section class="relative bg-night py-24 px-6 lg:px-20 section-fade">
+      <div class="max-w-6xl mx-auto space-y-12">
+        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
+          <div>
+            <p class="text-xs uppercase tracking-[0.4em] text-gold/70">Motion fragments</p>
+            <h2 class="font-display text-3xl md:text-5xl">Motion Fragments</h2>
+          </div>
+          <p class="text-mist/70 max-w-2xl">
+            A carousel of feelings suspended in time. Swipe through the reel and let each vignette hum against the edges of your peripheral memory.
+          </p>
+        </div>
+
+        <div class="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-4">
+          <article
+            class="relative min-w-[280px] md:min-w-[340px] aspect-video rounded-[28px] border border-gold/20 bg-black/60 motion-tile snap-start clip-vignette overflow-hidden"
+          >
+            <iframe
+              class="w-full h-full"
+              src="https://www.youtube.com/embed/YE7VzlLtp-4?autoplay=1&mute=1&loop=1&controls=0&playlist=YE7VzlLtp-4&modestbranding=1&playsinline=1&rel=0"
+              title="Nostalgia Motion Clip"
+              loading="lazy"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              referrerpolicy="strict-origin-when-cross-origin"
+            ></iframe>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20"></div>
+            <div class="absolute bottom-4 left-5 right-5 text-left space-y-2">
+              <p class="text-xs uppercase tracking-[0.4em] text-gold/70">Nostalgia</p>
+              <p class="font-display text-xl">Projector dust swirling like memory.</p>
+            </div>
+          </article>
+
+          <article
+            class="relative min-w-[280px] md:min-w-[340px] aspect-video rounded-[28px] border border-gold/20 bg-black/60 motion-tile snap-start clip-vignette overflow-hidden"
+          >
+            <iframe
+              class="w-full h-full"
+              src="https://www.youtube.com/embed/aqz-KE-bpKQ?autoplay=1&mute=1&loop=1&controls=0&playlist=aqz-KE-bpKQ&modestbranding=1&playsinline=1&rel=0"
+              title="Fear Motion Clip"
+              loading="lazy"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              referrerpolicy="strict-origin-when-cross-origin"
+            ></iframe>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30"></div>
+            <div class="absolute bottom-4 left-5 right-5 text-left space-y-2">
+              <p class="text-xs uppercase tracking-[0.4em] text-gold/70">Fear</p>
+              <p class="font-display text-xl">Corridors breathing in shadow.</p>
+            </div>
+          </article>
+
+          <article
+            class="relative min-w-[280px] md:min-w-[340px] aspect-video rounded-[28px] border border-gold/20 bg-black/60 motion-tile snap-start clip-vignette overflow-hidden"
+          >
+            <iframe
+              class="w-full h-full"
+              src="https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1&mute=1&loop=1&controls=0&playlist=LXb3EKWsInQ&modestbranding=1&playsinline=1&rel=0"
+              title="Joy Motion Clip"
+              loading="lazy"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              referrerpolicy="strict-origin-when-cross-origin"
+            ></iframe>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/25"></div>
+            <div class="absolute bottom-4 left-5 right-5 text-left space-y-2">
+              <p class="text-xs uppercase tracking-[0.4em] text-gold/70">Joy</p>
+              <p class="font-display text-xl">Color rising like laughter.</p>
+            </div>
+          </article>
+
+          <article
+            class="relative min-w-[280px] md:min-w-[340px] aspect-video rounded-[28px] border border-gold/20 bg-black/60 motion-tile snap-start clip-vignette overflow-hidden"
+          >
+            <iframe
+              class="w-full h-full"
+              src="https://www.youtube.com/embed/erLk59H86ww?autoplay=1&mute=1&loop=1&controls=0&playlist=erLk59H86ww&modestbranding=1&playsinline=1&rel=0"
+              title="Wonder Motion Clip"
+              loading="lazy"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              referrerpolicy="strict-origin-when-cross-origin"
+            ></iframe>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/25"></div>
+            <div class="absolute bottom-4 left-5 right-5 text-left space-y-2">
+              <p class="text-xs uppercase tracking-[0.4em] text-gold/70">Wonder</p>
+              <p class="font-display text-xl">Neon horizons stretching beyond thought.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- AUDIO SECTION: immersive sound block, update audio source -->
+    <section class="relative bg-charcoal py-24 px-6 lg:px-20 section-fade">
+      <div class="max-w-5xl mx-auto space-y-12">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-10">
+          <div class="space-y-4">
+            <p class="text-xs uppercase tracking-[0.4em] text-gold/70">Immersive wave</p>
+            <h2 class="font-display text-3xl md:text-5xl">The Pulse of Dialogue</h2>
+            <p class="text-mist/70 max-w-xl">
+              Sound is a silhouette. Close your eyes. Let the violins breathe, let the undertones bruise, let the echo stitch you back together.
+            </p>
+          </div>
+          <a class="text-gold border-b border-gold/40 uppercase tracking-[0.3em] text-xs" href="#" target="_blank"
+            >Listen in New Tab</a
+          >
+        </div>
+
+        <div class="space-y-6">
+          <div class="h-0.5 bg-gradient-to-r from-transparent via-gold to-transparent"></div>
+          <div class="h-0.5 bg-gradient-to-r from-transparent via-gold/60 to-transparent"></div>
+        </div>
+
+        <div class="bg-black/70 border border-white/15 rounded-[36px] p-8 backdrop-blur-2xl shadow-2xl film-frame">
+          <div class="flex items-center justify-between pb-6 border-b border-white/10">
+            <div>
+              <p class="text-xs uppercase tracking-[0.4em] text-gold/70">Audio reel</p>
+              <p class="font-display text-2xl">Dialogue Pulse</p>
+            </div>
+            <span class="inline-flex items-center gap-2 text-gold text-xs tracking-[0.4em]">
+              <span class="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
+              Live
+            </span>
+          </div>
+          <div class="pt-6">
+            <audio controls class="w-full accent-gold">
+              <source src="https://cdn.pixabay.com/audio/2022/10/04/audio_2ca0f5d236.mp3" type="audio/mpeg" />
+              Your browser does not support the audio element.
+            </audio>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIDEO SECTION: film strip style, update video source -->
+    <section class="relative bg-night py-24 px-6 lg:px-20 section-fade">
+      <div
+        class="max-w-5xl mx-auto text-center space-y-8 relative border border-white/5 rounded-[40px] p-10 film-grain overflow-hidden"
+      >
+        <div class="absolute inset-x-12 top-6 h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent"></div>
+        <div class="absolute inset-x-12 bottom-6 h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent"></div>
+
+        <p class="text-xs uppercase tracking-[0.4em] text-gold/70">Visual fragment</p>
+        <h2 class="font-display text-3xl md:text-5xl">A Single Frame of Breath</h2>
+        <p class="text-mist/70 max-w-2xl mx-auto">
+          Light spills over the lens, dust floats in focus, and emotion lingers like smoke in an empty theatre.
+        </p>
+
+        <div class="relative mx-auto max-w-3xl rounded-[32px] overflow-hidden border border-gold/60 shadow-2xl film-frame">
+          <video
+            class="w-full rounded-[32px] object-cover"
+            autoplay
+            muted
+            loop
+            playsinline
+          >
+            <source src="https://cdn.coverr.co/videos/coverr-a-night-at-the-movies-7930/1080p.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+
+        <button
+          class="inline-flex items-center justify-center gap-3 border border-gold text-gold px-10 py-3 rounded-full uppercase tracking-[0.3em] text-xs md:text-sm transition duration-500 hover:scale-105 hover:shadow-glow"
+        >
+          View Full Film
+          <span class="w-1.5 h-1.5 bg-gold rounded-full"></span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ABOUT SECTION: editorial layout, update copy and imagery -->
+    <section class="relative bg-charcoal py-24 px-6 lg:px-20 section-fade">
+      <div class="max-w-6xl mx-auto grid gap-12 lg:grid-cols-2 items-center">
+        <div
+          class="relative rounded-[40px] h-96 bg-gradient-to-br from-gold/20 via-black to-black border border-gold/20 overflow-hidden"
+        >
+          <div class="absolute inset-8 bg-[url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=60')] bg-cover bg-center opacity-70 mix-blend-screen rounded-[32px]"></div>
+          <div class="absolute inset-3 border border-white/10 rounded-[36px]"></div>
+        </div>
+
+        <div class="space-y-6">
+          <p class="text-xs uppercase tracking-[0.4em] text-gold/70">About the study</p>
+          <h2 class="font-display text-3xl md:text-5xl">An Essay in Motion</h2>
+          <p class="text-mist/70">
+            This project traces the emotional architecture of film—how quiet frames carry thunder, how dialogue can bruise,
+            how silence can cradle catharsis. It is cinema as synesthesia, a map of feeling rendered in light.
+          </p>
+          <blockquote class="border-l-4 border-gold pl-6 italic text-lg text-mist/80">
+            “Every film is an inheritance of feeling, passed quietly through the dark.”
+          </blockquote>
+          <p class="text-mist/60">
+            Designed as a tactile microsite, it pairs editorial restraint with cinematic spectacle to honor the softness of being human.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER SECTION: minimal closing footer, update links -->
+    <footer class="bg-black border-t border-gold/30 py-10 px-6 lg:px-20">
+      <div class="max-w-6xl mx-auto flex flex-col gap-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <p class="font-display text-2xl tracking-tight">Cinema & Emotion</p>
+          <nav class="flex items-center gap-4 text-xs uppercase tracking-[0.3em] text-mist/60">
+            <a class="hover:text-gold">Home</a>
+            <span class="w-1 h-1 bg-gold rounded-full shadow-glow"></span>
+            <a class="hover:text-gold">Audio</a>
+            <span class="w-1 h-1 bg-gold rounded-full shadow-glow"></span>
+            <a class="hover:text-gold">Film</a>
+            <span class="w-1 h-1 bg-gold rounded-full shadow-glow"></span>
+            <a class="hover:text-gold">About</a>
+          </nav>
+        </div>
+        <p class="text-[11px] text-mist/40 uppercase tracking-[0.4em]">
+          Crafted for the submission “Cinema & Emotion — How Films Shape the Way We Feel”
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
+
