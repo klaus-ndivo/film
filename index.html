@@ -269,20 +269,23 @@
               A cinematic teaser capturing Bruno’s chase, Pip’s mentorship, and the promise to keep walking toward home.
             </p>
             <div class="relative glass rounded-[40px] overflow-hidden border border-glow/20 shadow-amber-lg">
-              <div class="aspect-video">
-                <iframe
-                  class="w-full h-full"
-                  src="https://www.youtube.com/embed/YE7VzlLtp-4?mute=1&controls=0&rel=0"
-                  title="Left Behind Trailer"
-                  loading="lazy"
-                  allow="autoplay; encrypted-media; picture-in-picture"
-                ></iframe>
+              <div class="aspect-video relative">
+                <video
+                  class="w-full h-full object-cover"
+                  controls
+                  controlsList="play pause volume fullscreen"
+                  playsinline
+                  preload="metadata"
+                  style="pointer-events: auto;"
+                >
+                  <source src="video/Gen-4%20Turbo%20I%20need%20a%20video%20of%20an%20emotional%20dog%20running%20down%20the%20street%204018675139.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
               </div>
-              <div class="absolute inset-0 bg-gradient-to-tr from-black/70 via-transparent to-black/30 pointer-events-none"></div>
-              <button class="absolute inset-x-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/15 border border-white/30 text-white px-8 py-3 rounded-full uppercase tracking-[0.3em] text-xs backdrop-blur hover:bg-glow/40 transition">
-                Watch trailer
-              </button>
             </div>
+            <p class="text-mist/60 text-sm mt-4">
+              Tap the native controls to watch Bruno sprint through the city streets.
+            </p>
           </div>
     </section>
 
