@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cinema & Emotion — How Films Shape the Way We Feel</title>
+    <title>Left Behind — Bruno & Pip</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -20,44 +20,37 @@
               body: ['Inter', 'sans-serif'],
             },
             colors: {
-              night: '#050505',
-              charcoal: '#0f0f0f',
-              gold: '#d4af37',
-              mist: '#f8f8f8',
+              coal: '#0c0605',
+              ember: '#2c1a15',
+              dusk: '#a86c4f',
+              glow: '#f5d2a5',
+              mist: '#f8f5f1',
+            },
+            boxShadow: {
+              'amber-lg': '0 40px 80px rgba(245,210,165,0.16)',
             },
             backgroundImage: {
               'hero-gradient':
-                'radial-gradient(circle at 20% 20%, rgba(212,175,55,0.12), transparent 45%), radial-gradient(circle at 80% 10%, rgba(255,255,255,0.08), transparent 50%), linear-gradient(135deg, #010101 0%, #111111 60%, #050505 100%)',
-            },
-            boxShadow: {
-              glow: '0 0 60px rgba(212,175,55,0.3)',
+                'radial-gradient(circle at 15% 20%, rgba(245,210,165,0.35), transparent 45%), radial-gradient(circle at 80% 10%, rgba(255,255,255,0.08), transparent 60%), linear-gradient(135deg, #100806 0%, #20120f 55%, #050303 100%)',
             },
             keyframes: {
-              fadeInUp: {
-                '0%': { opacity: 0, transform: 'translateY(20px)' },
+              fadeRise: {
+                '0%': { opacity: 0, transform: 'translateY(24px)' },
                 '100%': { opacity: 1, transform: 'translateY(0)' },
               },
-              slowPulse: {
-                '0%, 100%': { opacity: 0.3, transform: 'scale(1)' },
-                '50%': { opacity: 0.7, transform: 'scale(1.2)' },
-              },
               float: {
-                '0%, 100%': { transform: 'translateY(0px)' },
-                '50%': { transform: 'translateY(-10px)' },
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-8px)' },
               },
-              grain: {
-                '0%': { transform: 'translate(0,0)' },
-                '25%': { transform: 'translate(-10px, 5px)' },
-                '50%': { transform: 'translate(10px, -10px)' },
-                '75%': { transform: 'translate(-5px, 10px)' },
-                '100%': { transform: 'translate(0,0)' },
+              pan: {
+                '0%': { transform: 'scale(1.05) translate3d(0, 0, 0)' },
+                '100%': { transform: 'scale(1.1) translate3d(-14px, -6px, 0)' },
               },
             },
             animation: {
-              fadeInUp: 'fadeInUp 1.2s ease forwards',
-              slowPulse: 'slowPulse 6s ease-in-out infinite',
-              float: 'float 8s ease-in-out infinite',
-              grain: 'grain 14s steps(10) infinite',
+              fadeRise: 'fadeRise 1s ease forwards',
+              float: 'float 6s ease-in-out infinite',
+              pan: 'pan 22s ease-in-out infinite alternate',
             },
           },
         },
@@ -66,127 +59,40 @@
     <style>
       body {
         font-family: 'Inter', sans-serif;
-        background-color: #050505;
-        color: #f8f8f8;
+        background: #080404;
+        color: #f8f5f1;
       }
 
       .noise-layer {
-        pointer-events: none;
         position: fixed;
         inset: 0;
-        background-image: url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
+        background: url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
         opacity: 0.08;
+        pointer-events: none;
         mix-blend-mode: screen;
-        animation: grain 18s steps(6) infinite;
-        z-index: 10;
+        z-index: 40;
       }
 
-      .film-grain::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(circle, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.6));
-        mix-blend-mode: multiply;
-        pointer-events: none;
-      }
-
-      .film-grain::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: url('https://www.transparenttextures.com/patterns/noise-pattern-with-subtle-cross-lines.png');
-        opacity: 0.08;
-        pointer-events: none;
-        animation: grain 12s steps(6) infinite;
-      }
-
-      audio::-webkit-media-controls-panel {
-        background: rgba(5, 5, 5, 0.7);
-        border-radius: 999px;
-      }
-
-      audio::-webkit-media-controls-current-time-display,
-      audio::-webkit-media-controls-time-remaining-display {
-        color: #d4af37;
+      .glass {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(24px);
       }
 
       .section-fade {
         opacity: 0;
-        animation: fadeInSoft 1.6s ease forwards;
-        animation-delay: 0.2s;
+        animation: fadeInSoft 1.1s ease forwards;
       }
 
-      .tilt-card {
-        transition: transform 0.6s ease, border 0.6s ease, box-shadow 0.6s ease;
-      }
-
-      .tilt-card:hover {
-        transform: translateY(-8px) scale(1.02);
-      }
-
-      .clip-vignette {
-        position: relative;
-        overflow: hidden;
-      }
-
-      .clip-vignette::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(circle, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0.55));
-        pointer-events: none;
-      }
-
-      .motion-tile {
-        transition: transform 0.5s ease, box-shadow 0.5s ease, border 0.5s ease;
-      }
-
-      .motion-tile:hover {
-        transform: translateY(-6px) scale(1.03);
-        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
-      }
-
-      .motion-card {
-        width: clamp(240px, 78vw, 360px);
-      }
-
-      .film-frame {
-        position: relative;
-      }
-
-      .film-frame::before,
-      .film-frame::after {
-        content: '';
-        position: absolute;
-        inset: 12px;
-        border: 1px dashed rgba(212, 175, 55, 0.25);
-        pointer-events: none;
-      }
-
-      .film-frame::after {
-        inset: 6px;
-        border-style: solid;
-        border-width: 1px;
-      }
-
-      .lens-flare {
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(circle at 70% 20%, rgba(255, 255, 255, 0.25), transparent 45%);
-        mix-blend-mode: screen;
-        opacity: 0.35;
-        pointer-events: none;
-      }
-
-      .hero-pan {
-        background-size: 115%;
-        animation: heroDrift 18s ease-in-out infinite alternate;
+      .parallax {
+        background-size: 120%;
+        animation: heroDrift 24s ease-in-out infinite alternate;
       }
 
       @keyframes fadeInSoft {
         0% {
           opacity: 0;
-          transform: translateY(24px);
+          transform: translateY(32px);
         }
         100% {
           opacity: 1;
@@ -196,393 +102,214 @@
 
       @keyframes heroDrift {
         0% {
-          transform: scale(1) translate3d(0, 0, 0);
-          filter: saturate(1);
-        }
-        50% {
-          transform: scale(1.05) translate3d(-10px, -5px, 0);
-          filter: saturate(1.1);
+          transform: scale(1.02) translate3d(0, 0, 0);
         }
         100% {
-          transform: scale(1.08) translate3d(12px, 8px, 0);
-          filter: saturate(1.05);
+          transform: scale(1.08) translate3d(-16px, -8px, 0);
         }
       }
     </style>
   </head>
-  <body class="relative bg-night text-mist">
+  <body class="relative bg-coal text-mist">
     <div class="noise-layer"></div>
 
-    <!-- HERO SECTION: dramatic intro hero, update copy below -->
-    <section
-      class="relative min-h-screen bg-hero-gradient flex items-center justify-center px-6 py-20 overflow-hidden section-fade"
-    >
-      <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1478720568477-152d9b164e26?auto=format&fit=crop&w=1400&q=60')] bg-cover bg-center opacity-20 mix-blend-screen hero-pan"></div>
-      <div class="absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-black"></div>
-      <div class="lens-flare"></div>
-      <div class="absolute top-10 left-16 w-32 h-32 bg-gold/10 rounded-full blur-3xl animate-slowPulse"></div>
-      <div class="absolute bottom-10 right-20 w-44 h-44 bg-white/5 rounded-full blur-3xl animate-slowPulse"></div>
+    <!-- HERO -->
+    <section class="relative min-h-screen bg-hero-gradient overflow-hidden flex items-center px-6 py-16 md:py-24">
+      <div
+        class="absolute inset-0 opacity-40 mix-blend-screen parallax"
+        style="background-image: url('https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=1600&q=80'); background-position: center;"
+      ></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-coal via-coal/90 to-transparent"></div>
 
-      <div class="absolute inset-0 pointer-events-none">
-        <div class="w-full h-full relative">
-          <span
-            class="absolute top-1/4 left-1/3 w-2 h-2 bg-white/40 rounded-full blur-sm animate-pulse"
-          ></span>
-          <span
-            class="absolute top-1/3 right-1/4 w-1.5 h-1.5 bg-gold/50 rounded-full blur-[2px] animate-pulse"
-          ></span>
-          <span
-            class="absolute bottom-1/4 left-1/2 w-1 h-1 bg-white/30 rounded-full blur-[1px] animate-[pulse_4s_ease_in_out_infinite]"
-          ></span>
-        </div>
-      </div>
-
-      <div class="relative z-10 max-w-4xl text-center space-y-6 animate-fadeInUp">
-        <p class="uppercase tracking-[0.5em] text-xs text-gold/70">A sensory essay</p>
-        <h1 class="text-4xl md:text-7xl lg:text-8xl font-display tracking-tight">Cinema & Emotion</h1>
-        <p class="text-lg md:text-2xl text-mist/80 italic">How Films Shape the Way We Feel</p>
-        <p class="text-base md:text-lg text-mist/70">
-          A slow-breathing exploration of light, sound, and the emotional currents that linger after the credits fade.
-        </p>
-        <button
-          class="inline-flex items-center gap-3 border border-gold text-gold px-8 py-3 rounded-full uppercase tracking-[0.3em] text-xs md:text-sm transition duration-500 hover:scale-105 hover:shadow-glow"
-        >
-          Explore the Experience
-          <span class="w-2 h-2 bg-gold rounded-full animate-ping"></span>
-        </button>
-      </div>
-    </section>
-
-    <!-- EMOTION SHOWCASE: glass cards, update emotion descriptions -->
-    <section class="relative bg-night py-24 px-6 lg:px-20 section-fade">
-      <div class="max-w-6xl mx-auto space-y-8">
-        <div class="flex items-center justify-between gap-6 flex-wrap">
-          <div>
-            <p class="text-xs uppercase tracking-[0.4em] text-gold/70">Emotional frequencies</p>
-            <h2 class="font-display text-3xl md:text-5xl">Feelings Captured in Frames</h2>
+      <div class="relative z-10 max-w-6xl mx-auto grid gap-12 lg:grid-cols-[1.2fr,0.9fr] items-center">
+        <div class="space-y-6 animate-fadeRise">
+          <p class="uppercase tracking-[0.5em] text-xs text-glow/70">Short film</p>
+          <h1 class="text-4xl md:text-6xl lg:text-7xl font-display leading-tight">Left Behind</h1>
+          <p class="text-lg md:text-xl text-mist/85">
+            Bruno, a loyal dog left behind in the rush of a busy day, searches for home through streets that echo loneliness—until he meets Pip, a street-smart kitten who turns survival into symphony.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <button class="px-8 py-4 rounded-full border border-glow text-glow uppercase tracking-[0.3em] text-xs hover:bg-glow/10 transition">
+              Discover the journey
+            </button>
+            <button class="px-8 py-4 rounded-full bg-glow text-coal font-semibold uppercase tracking-[0.2em] text-xs shadow-amber-lg hover:bg-glow/90 transition">
+              Experience the story
+            </button>
           </div>
-          <p class="text-mist/70 max-w-xl">
-            Each emotion is a lens. These fragments behave like moodboards, whispering narratives in color, texture, and quiet light.
+        </div>
+        <div class="glass rounded-[40px] p-8 space-y-4 shadow-amber-lg animate-fadeRise" style="animation-delay: 0.15s">
+          <p class="text-xs uppercase tracking-[0.4em] text-glow/80">Story pulse</p>
+          <p class="font-display text-2xl leading-relaxed">
+            “Humans get busy… they forget,” Bruno whispers as taillights dissolve into the city haze.
+          </p>
+          <p class="text-mist/70 text-sm">
+            This landing page chronicles the warmth, ache, and hope of <span class="text-glow">Left Behind</span>—a heartwarming short about finding home in someone new.
           </p>
         </div>
-
-        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-          <article
-            class="relative overflow-hidden rounded-3xl border border-white/5 bg-white/5 backdrop-blur-2xl p-8 flex flex-col gap-6 tilt-card hover:border-gold/80 hover:shadow-glow group"
-          >
-            <div class="relative h-48 rounded-2xl clip-vignette border border-white/10">
-              <video
-                class="absolute inset-0 w-full h-full object-cover opacity-80"
-                autoplay
-                muted
-                loop
-                playsinline
-                preload="auto"
-                poster="https://images.unsplash.com/photo-1453227588063-bb302b62f50b?auto=format&fit=crop&w=900&q=60"
-              >
-                <source src="https://cdn.coverr.co/videos/coverr-film-memories-4020/1080p.mp4" type="video/mp4" />
-              </video>
-              <div class="absolute inset-0 bg-gradient-to-br from-gold/40 via-transparent to-black/80"></div>
-            </div>
-            <div class="space-y-3">
-              <h3 class="font-display text-3xl tracking-tight text-mist">Nostalgia</h3>
-              <p class="text-sm md:text-base text-mist/70">
-                Sepia whispers of home movies, dust in the projector light, every frame a gently-lit memory.
-              </p>
-            </div>
-          </article>
-
-          <article
-            class="relative overflow-hidden rounded-3xl border border-white/5 bg-white/5 backdrop-blur-2xl p-8 flex flex-col gap-6 tilt-card hover:border-gold/80 hover:shadow-glow group"
-          >
-            <div class="relative h-48 rounded-2xl clip-vignette border border-white/10">
-              <video
-                class="absolute inset-0 w-full h-full object-cover opacity-80"
-                autoplay
-                muted
-                loop
-                playsinline
-                preload="auto"
-                poster="https://images.unsplash.com/photo-1459623837996-0c88b0b63e38?auto=format&fit=crop&w=900&q=60"
-              >
-                <source src="https://cdn.coverr.co/videos/coverr-dark-corridor-1891/1080p.mp4" type="video/mp4" />
-              </video>
-              <div class="absolute inset-0 bg-gradient-to-br from-black via-gold/20 to-transparent"></div>
-            </div>
-            <div class="space-y-3">
-              <h3 class="font-display text-3xl tracking-tight text-mist">Fear</h3>
-              <p class="text-sm md:text-base text-mist/70">
-                Shadows stretch into myth, heartbeat percussion builds, and silence becomes the loudest sound.
-              </p>
-            </div>
-          </article>
-
-          <article
-            class="relative overflow-hidden rounded-3xl border border-white/5 bg-white/5 backdrop-blur-2xl p-8 flex flex-col gap-6 tilt-card hover:border-gold/80 hover:shadow-glow group"
-          >
-            <div class="relative h-48 rounded-2xl clip-vignette border border-white/10">
-              <video
-                class="absolute inset-0 w-full h-full object-cover opacity-90"
-                autoplay
-                muted
-                loop
-                playsinline
-                preload="auto"
-                poster="https://images.unsplash.com/photo-1478720568477-152d9b164e26?auto=format&fit=crop&w=900&q=60"
-              >
-                <source src="https://cdn.coverr.co/videos/coverr-balloons-9107/1080p.mp4" type="video/mp4" />
-              </video>
-              <div class="absolute inset-0 bg-gradient-to-br from-gold/50 via-pink-400/30 to-transparent mix-blend-screen"></div>
-            </div>
-            <div class="space-y-3">
-              <h3 class="font-display text-3xl tracking-tight text-mist">Joy</h3>
-              <p class="text-sm md:text-base text-mist/70">
-                Saturated light, laughter in slow motion, the horizon opening wide to invite wonder in.
-              </p>
-            </div>
-          </article>
-
-          <article
-            class="relative overflow-hidden rounded-3xl border border-white/5 bg-white/5 backdrop-blur-2xl p-8 flex flex-col gap-6 tilt-card hover:border-gold/80 hover:shadow-glow group"
-          >
-            <div class="relative h-48 rounded-2xl clip-vignette border border-white/10">
-              <video
-                class="absolute inset-0 w-full h-full object-cover opacity-80"
-                autoplay
-                muted
-                loop
-                playsinline
-                preload="auto"
-                poster="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=60"
-              >
-                <source src="https://cdn.coverr.co/videos/coverr-night-drive-3179/1080p.mp4" type="video/mp4" />
-              </video>
-              <div class="absolute inset-0 bg-gradient-to-br from-black/80 via-gold/15 to-transparent"></div>
-            </div>
-            <div class="space-y-3">
-              <h3 class="font-display text-3xl tracking-tight text-mist">Loneliness</h3>
-              <p class="text-sm md:text-base text-mist/70">
-                Empty highways hum with neon ghosts, the pause between heartbeats stretching like horizon lines.
-              </p>
-            </div>
-          </article>
-        </div>
       </div>
     </section>
 
-    <!-- NEW: Motion Fragments horizontal reel -->
-    <section class="relative bg-night py-24 px-6 lg:px-20 section-fade">
-      <div class="max-w-6xl mx-auto space-y-12">
-        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
-          <div>
-            <p class="text-xs uppercase tracking-[0.4em] text-gold/70">Motion fragments</p>
-            <h2 class="font-display text-3xl md:text-5xl">Motion Fragments</h2>
-          </div>
-          <p class="text-mist/70 max-w-2xl">
-            A carousel of feelings suspended in time. Swipe through the reel and let each vignette hum against the edges of your peripheral memory.
+    <!-- ABOUT -->
+    <section class="relative bg-coal py-20 px-6">
+      <div class="max-w-6xl mx-auto grid gap-12 lg:grid-cols-[1.1fr,0.9fr] items-center">
+        <div class="space-y-6 section-fade">
+          <p class="text-xs uppercase tracking-[0.4em] text-glow/70">About the movie</p>
+          <h2 class="text-3xl md:text-5xl font-display">Loneliness, friendship, hope.</h2>
+          <p class="text-mist/80 leading-relaxed">
+            Bruno is accidentally left when the car door shuts. Convinced his humans still love him, he navigates a city that suddenly feels too loud. Every sound is sharper, every shadow unfamiliar, yet he keeps moving.
+          </p>
+          <p class="text-mist/70">
+            Pip—a small grey kitten—slides a crust of bread toward him: “You look like you need this more than I do.” From that kindness, the story of “Left Behind” blooms into a duet about resilience and shared instinct.
           </p>
         </div>
-
-        <div class="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-4">
-          <article
-            class="motion-card aspect-video relative rounded-[28px] border border-gold/20 bg-black/60 motion-tile snap-start clip-vignette overflow-hidden"
-          >
-            <iframe
-              class="w-full h-full"
-              src="https://www.youtube.com/embed/YE7VzlLtp-4?autoplay=1&mute=1&loop=1&controls=0&playlist=YE7VzlLtp-4&modestbranding=1&playsinline=1&rel=0"
-              title="Nostalgia Motion Clip"
-              loading="lazy"
-              allow="autoplay; encrypted-media; picture-in-picture"
-              referrerpolicy="strict-origin-when-cross-origin"
-            ></iframe>
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20"></div>
-            <div class="absolute bottom-4 left-5 right-5 text-left space-y-2">
-              <p class="text-xs uppercase tracking-[0.4em] text-gold/70">Nostalgia</p>
-              <p class="font-display text-xl">Projector dust swirling like memory.</p>
-            </div>
-          </article>
-
-          <article
-            class="motion-card aspect-video relative rounded-[28px] border border-gold/20 bg-black/60 motion-tile snap-start clip-vignette overflow-hidden"
-          >
-            <iframe
-              class="w-full h-full"
-              src="https://www.youtube.com/embed/aqz-KE-bpKQ?autoplay=1&mute=1&loop=1&controls=0&playlist=aqz-KE-bpKQ&modestbranding=1&playsinline=1&rel=0"
-              title="Fear Motion Clip"
-              loading="lazy"
-              allow="autoplay; encrypted-media; picture-in-picture"
-              referrerpolicy="strict-origin-when-cross-origin"
-            ></iframe>
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30"></div>
-            <div class="absolute bottom-4 left-5 right-5 text-left space-y-2">
-              <p class="text-xs uppercase tracking-[0.4em] text-gold/70">Fear</p>
-              <p class="font-display text-xl">Corridors breathing in shadow.</p>
-            </div>
-          </article>
-
-          <article
-            class="motion-card aspect-video relative rounded-[28px] border border-gold/20 bg-black/60 motion-tile snap-start clip-vignette overflow-hidden"
-          >
-            <iframe
-              class="w-full h-full"
-              src="https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1&mute=1&loop=1&controls=0&playlist=LXb3EKWsInQ&modestbranding=1&playsinline=1&rel=0"
-              title="Joy Motion Clip"
-              loading="lazy"
-              allow="autoplay; encrypted-media; picture-in-picture"
-              referrerpolicy="strict-origin-when-cross-origin"
-            ></iframe>
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/25"></div>
-            <div class="absolute bottom-4 left-5 right-5 text-left space-y-2">
-              <p class="text-xs uppercase tracking-[0.4em] text-gold/70">Joy</p>
-              <p class="font-display text-xl">Color rising like laughter.</p>
-            </div>
-          </article>
-
-          <article
-            class="motion-card aspect-video relative rounded-[28px] border border-gold/20 bg-black/60 motion-tile snap-start clip-vignette overflow-hidden"
-          >
-            <iframe
-              class="w-full h-full"
-              src="https://www.youtube.com/embed/erLk59H86ww?autoplay=1&mute=1&loop=1&controls=0&playlist=erLk59H86ww&modestbranding=1&playsinline=1&rel=0"
-              title="Wonder Motion Clip"
-              loading="lazy"
-              allow="autoplay; encrypted-media; picture-in-picture"
-              referrerpolicy="strict-origin-when-cross-origin"
-            ></iframe>
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/25"></div>
-            <div class="absolute bottom-4 left-5 right-5 text-left space-y-2">
-              <p class="text-xs uppercase tracking-[0.4em] text-gold/70">Wonder</p>
-              <p class="font-display text-xl">Neon horizons stretching beyond thought.</p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- AUDIO SECTION: immersive sound block, update audio source -->
-    <section class="relative bg-charcoal py-24 px-6 lg:px-20 section-fade">
-      <div class="max-w-5xl mx-auto space-y-12">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-10">
-          <div class="space-y-4">
-            <p class="text-xs uppercase tracking-[0.4em] text-gold/70">Immersive wave</p>
-            <h2 class="font-display text-3xl md:text-5xl">The Pulse of Dialogue</h2>
-            <p class="text-mist/70 max-w-xl">
-              Sound is a silhouette. Close your eyes. Let the violins breathe, let the undertones bruise, let the echo stitch you back together.
+        <div class="glass rounded-[40px] p-8 space-y-6 section-fade" style="animation-delay: 0.15s">
+          <div class="space-y-2">
+            <p class="text-xs uppercase tracking-[0.4em] text-glow/70">Main Story Summary</p>
+            <p class="text-sm text-mist/80 leading-relaxed">
+              “Bruno, a loyal family dog, is accidentally left behind when the car door shuts before he can hop in... Believing his humans didn’t mean to leave him, Bruno begins navigating a world that suddenly feels much larger and much louder.”
             </p>
           </div>
-          <a class="text-gold border-b border-gold/40 uppercase tracking-[0.3em] text-xs" href="#" target="_blank"
-            >Listen in New Tab</a
-          >
-        </div>
-
-        <div class="space-y-6">
-          <div class="h-0.5 bg-gradient-to-r from-transparent via-gold to-transparent"></div>
-          <div class="h-0.5 bg-gradient-to-r from-transparent via-gold/60 to-transparent"></div>
-        </div>
-
-        <div class="bg-black/70 border border-white/15 rounded-[36px] p-8 backdrop-blur-2xl shadow-2xl film-frame">
-          <div class="flex items-center justify-between pb-6 border-b border-white/10">
-            <div>
-              <p class="text-xs uppercase tracking-[0.4em] text-gold/70">Audio reel</p>
-              <p class="font-display text-2xl">Dialogue Pulse</p>
+          <div class="grid grid-cols-2 gap-4 text-center">
+            <div class="p-5 rounded-2xl bg-white/5 border border-white/5">
+              <p class="text-3xl font-display text-glow">15</p>
+              <p class="text-xs uppercase tracking-[0.3em] text-mist/60">Minutes</p>
             </div>
-            <span class="inline-flex items-center gap-2 text-gold text-xs tracking-[0.4em]">
-              <span class="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
-              Live
-            </span>
+            <div class="p-5 rounded-2xl bg-white/5 border border-white/5">
+              <p class="text-3xl font-display text-glow">2</p>
+              <p class="text-xs uppercase tracking-[0.3em] text-mist/60">Hearts</p>
+            </div>
           </div>
-          <div class="pt-6">
-            <audio controls class="w-full accent-gold">
-              <source src="https://cdn.pixabay.com/audio/2022/10/04/audio_2ca0f5d236.mp3" type="audio/mpeg" />
-              Your browser does not support the audio element.
-            </audio>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- VIDEO SECTION: film strip style, update video source -->
-    <section class="relative bg-night py-24 px-6 lg:px-20 section-fade">
-      <div
-        class="max-w-5xl mx-auto text-center space-y-8 relative border border-white/5 rounded-[40px] p-10 film-grain overflow-hidden"
-      >
-        <div class="absolute inset-x-12 top-6 h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent"></div>
-        <div class="absolute inset-x-12 bottom-6 h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent"></div>
-
-        <p class="text-xs uppercase tracking-[0.4em] text-gold/70">Visual fragment</p>
-        <h2 class="font-display text-3xl md:text-5xl">A Single Frame of Breath</h2>
-        <p class="text-mist/70 max-w-2xl mx-auto">
-          Light spills over the lens, dust floats in focus, and emotion lingers like smoke in an empty theatre.
-        </p>
-
-        <div class="relative mx-auto max-w-3xl rounded-[32px] overflow-hidden border border-gold/60 shadow-2xl film-frame">
-          <video
-            class="w-full rounded-[32px] object-cover"
-            autoplay
-            muted
-            loop
-            playsinline
-          >
-            <source src="https://cdn.coverr.co/videos/coverr-a-night-at-the-movies-7930/1080p.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </div>
-
-        <button
-          class="inline-flex items-center justify-center gap-3 border border-gold text-gold px-10 py-3 rounded-full uppercase tracking-[0.3em] text-xs md:text-sm transition duration-500 hover:scale-105 hover:shadow-glow"
-        >
-          View Full Film
-          <span class="w-1.5 h-1.5 bg-gold rounded-full"></span>
-        </button>
-      </div>
-    </section>
-
-    <!-- ABOUT SECTION: editorial layout, update copy and imagery -->
-    <section class="relative bg-charcoal py-24 px-6 lg:px-20 section-fade">
-      <div class="max-w-6xl mx-auto grid gap-12 lg:grid-cols-2 items-center">
-        <div
-          class="relative rounded-[40px] h-96 bg-gradient-to-br from-gold/20 via-black to-black border border-gold/20 overflow-hidden"
-        >
-          <div class="absolute inset-8 bg-[url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=60')] bg-cover bg-center opacity-70 mix-blend-screen rounded-[32px]"></div>
-          <div class="absolute inset-3 border border-white/10 rounded-[36px]"></div>
-        </div>
-
-        <div class="space-y-6">
-          <p class="text-xs uppercase tracking-[0.4em] text-gold/70">About the study</p>
-          <h2 class="font-display text-3xl md:text-5xl">An Essay in Motion</h2>
-          <p class="text-mist/70">
-            This project traces the emotional architecture of film—how quiet frames carry thunder, how dialogue can bruise,
-            how silence can cradle catharsis. It is cinema as synesthesia, a map of feeling rendered in light.
-          </p>
-          <blockquote class="border-l-4 border-gold pl-6 italic text-lg text-mist/80">
-            “Every film is an inheritance of feeling, passed quietly through the dark.”
-          </blockquote>
-          <p class="text-mist/60">
-            Designed as a tactile microsite, it pairs editorial restraint with cinematic spectacle to honor the softness of being human.
+          <p class="text-mist/70 text-sm">
+            When clouds settle over the city, Bruno remembers the little girl who held his face, the scent of jackets, the squeak of his favourite toy. Pip promises he won’t remember alone.
           </p>
         </div>
       </div>
     </section>
 
-    <!-- FOOTER SECTION: minimal closing footer, update links -->
-    <footer class="bg-black border-t border-gold/30 py-10 px-6 lg:px-20">
-      <div class="max-w-6xl mx-auto flex flex-col gap-6">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <p class="font-display text-2xl tracking-tight">Cinema & Emotion</p>
-          <nav class="flex items-center gap-4 text-xs uppercase tracking-[0.3em] text-mist/60">
-            <a class="hover:text-gold">Home</a>
-            <span class="w-1 h-1 bg-gold rounded-full shadow-glow"></span>
-            <a class="hover:text-gold">Audio</a>
-            <span class="w-1 h-1 bg-gold rounded-full shadow-glow"></span>
-            <a class="hover:text-gold">Film</a>
-            <span class="w-1 h-1 bg-gold rounded-full shadow-glow"></span>
-            <a class="hover:text-gold">About</a>
-          </nav>
+    <!-- CHARACTERS -->
+    <section class="relative bg-ember py-24 px-6">
+      <div class="max-w-6xl mx-auto space-y-10">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 section-fade">
+          <div>
+            <p class="text-xs uppercase tracking-[0.4em] text-glow/80">Characters</p>
+            <h2 class="text-3xl md:text-5xl font-display">Bruno & Pip</h2>
+          </div>
+          <p class="text-mist/70 max-w-2xl">Glassmorphic dossiers honoring the courage of two unlikely companions.</p>
         </div>
-        <p class="text-[11px] text-mist/40 uppercase tracking-[0.4em]">
-          Crafted for the submission “Cinema & Emotion — How Films Shape the Way We Feel”
-        </p>
+        <div class="grid gap-8 md:grid-cols-2">
+          <article class="glass rounded-[32px] p-8 space-y-5 section-fade">
+            <div class="h-60 rounded-3xl overflow-hidden relative">
+              <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=900&q=80" alt="Bruno the dog" class="w-full h-full object-cover" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80"></div>
+            </div>
+            <h3 class="font-display text-3xl">Bruno</h3>
+            <p class="text-mist/80">
+              Gentle, earnest, and guided by memory. He forgives even while he aches: “Humans get busy… they forget.”
+            </p>
+            <ul class="text-sm text-mist/60 space-y-2">
+              <li>• Remembers soft blankets and warm meals.</li>
+              <li>• Listens for the squeak of his favourite toy in every alley.</li>
+              <li>• Believes love is waiting just beyond the next street.</li>
+            </ul>
+          </article>
+          <article class="glass rounded-[32px] p-8 space-y-5 section-fade" style="animation-delay: 0.1s">
+            <div class="h-60 rounded-3xl overflow-hidden relative">
+              <img src="https://images.unsplash.com/photo-1507149833265-60c372daea22?auto=format&fit=crop&w=900&q=80" alt="Pip the kitten" class="w-full h-full object-cover" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80"></div>
+            </div>
+            <h3 class="font-display text-3xl">Pip</h3>
+            <p class="text-mist/80">
+              Street-smart, agile, and deeply loyal. Pip survives by reading crowds, sensing danger, and sharing hope.
+            </p>
+            <ul class="text-sm text-mist/60 space-y-2">
+              <li>• Pushes bread toward Bruno before taking a bite.</li>
+              <li>• Teaches him to slip between bicycles, avoid fast wheels.</li>
+              <li>• Knows the city’s rhythm and where softness hides.</li>
+            </ul>
+          </article>
+        </div>
       </div>
+    </section>
+
+    <!-- KEY MOMENTS -->
+    <section class="relative bg-coal py-24 px-6">
+      <div class="max-w-6xl mx-auto space-y-12">
+        <div class="space-y-3 section-fade">
+          <p class="text-xs uppercase tracking-[0.4em] text-glow/70">Key moments</p>
+          <h2 class="text-3xl md:text-5xl font-display">Story beats that linger</h2>
+        </div>
+        <div class="grid gap-8 md:grid-cols-2">
+          <article class="glass rounded-[32px] p-8 space-y-4 section-fade">
+            <p class="text-sm uppercase tracking-[0.3em] text-glow/60">Moment 01</p>
+            <h3 class="font-display text-2xl text-glow">The car pulls away</h3>
+            <p class="text-mist/70">The city swallows the taillights. Bruno’s paws thrum against asphalt until the traffic roar drowns hope.</p>
+          </article>
+          <article class="glass rounded-[32px] p-8 space-y-4 section-fade" style="animation-delay: 0.1s">
+            <p class="text-sm uppercase tracking-[0.3em] text-glow/60">Moment 02</p>
+            <h3 class="font-display text-2xl text-glow">Bread on the concrete</h3>
+            <p class="text-mist/70">Pip nudges food toward him. “You look like you need this more than I do.” Trust flickers awake.</p>
+          </article>
+          <article class="glass rounded-[32px] p-8 space-y-4 section-fade" style="animation-delay: 0.2s">
+            <p class="text-sm uppercase tracking-[0.3em] text-glow/60">Moment 03</p>
+            <h3 class="font-display text-2xl text-glow">Lessons in motion</h3>
+            <p class="text-mist/70">Pip teaches Bruno to weave between crowds, sense danger early, and breathe with the rhythm of the streets.</p>
+          </article>
+          <article class="glass rounded-[32px] p-8 space-y-4 section-fade" style="animation-delay: 0.3s">
+            <p class="text-sm uppercase tracking-[0.3em] text-glow/60">Moment 04</p>
+            <h3 class="font-display text-2xl text-glow">Nightfall memories</h3>
+            <p class="text-mist/70">Under neon halos Bruno remembers the little girl, the scent of jackets, the squeak of his favourite toy.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRAILER -->
+    <section class="relative bg-ember py-24 px-6">
+      <div class="max-w-5xl mx-auto text-center space-y-6 section-fade">
+            <p class="text-xs uppercase tracking-[0.4em] text-glow/70">Trailer</p>
+            <h2 class="text-3xl md:text-5xl font-display">Watch the emotional reel</h2>
+            <p class="text-mist/70 max-w-3xl mx-auto">
+              A cinematic teaser capturing Bruno’s chase, Pip’s mentorship, and the promise to keep walking toward home.
+            </p>
+            <div class="relative glass rounded-[40px] overflow-hidden border border-glow/20 shadow-amber-lg">
+              <div class="aspect-video">
+                <iframe
+                  class="w-full h-full"
+                  src="https://www.youtube.com/embed/YE7VzlLtp-4?mute=1&controls=0&rel=0"
+                  title="Left Behind Trailer"
+                  loading="lazy"
+                  allow="autoplay; encrypted-media; picture-in-picture"
+                ></iframe>
+              </div>
+              <div class="absolute inset-0 bg-gradient-to-tr from-black/70 via-transparent to-black/30 pointer-events-none"></div>
+              <button class="absolute inset-x-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/15 border border-white/30 text-white px-8 py-3 rounded-full uppercase tracking-[0.3em] text-xs backdrop-blur hover:bg-glow/40 transition">
+                Watch trailer
+              </button>
+            </div>
+          </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="relative bg-coal py-24 px-6">
+      <div class="max-w-4xl mx-auto glass rounded-[40px] p-10 space-y-6 text-center section-fade">
+        <p class="text-xs uppercase tracking-[0.4em] text-glow/70">Call to action</p>
+        <h2 class="text-3xl md:text-5xl font-display">Follow Bruno & Pip into the light</h2>
+        <p class="text-mist/80">
+          “Left Behind” is a reminder that even when we feel forgotten, someone is searching beside us. Share this heartwarming short, or step deeper into the story.
+        </p>
+        <div class="flex flex-wrap gap-4 justify-center">
+          <a class="px-8 py-4 rounded-full border border-glow text-glow uppercase tracking-[0.3em] text-xs hover:bg-glow/10 transition" href="#">
+            Discover the journey
+          </a>
+          <a class="px-8 py-4 rounded-full bg-glow text-coal font-semibold uppercase tracking-[0.2em] text-xs shadow-amber-lg hover:bg-glow/90 transition" href="#">
+            Share their story
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="bg-black border-t border-white/10 py-8 px-6 text-center text-sm text-mist/50">
+      Left Behind © 2025 — crafted for the story of Bruno & Pip.
     </footer>
   </body>
 </html>
